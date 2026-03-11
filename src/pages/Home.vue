@@ -12,7 +12,7 @@ const { ingredients, coctails } = storeToRefs( rootStore );
 const { ingredient } =ref(null);
 
 function getCoctails(){
-    rootStore.getCoctails(ingredients.value);
+    rootStore.getCoctails(ingredient.value);
 }
 </script>
 
