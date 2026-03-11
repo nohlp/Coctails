@@ -9,7 +9,7 @@ const rootStore = useRootStore();
 rootStore.getIngredients();
 
 const { ingredients, coctails } = storeToRefs( rootStore );
-const { ingredient } =ref(null);
+const ingredient  =ref(null);
 
 function getCoctails(){
     rootStore.getCoctails(ingredient.value);
