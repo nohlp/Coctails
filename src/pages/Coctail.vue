@@ -1,13 +1,12 @@
 <script setup>
 import axios from 'axios';
 import { computed, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { COCATIL_BY_ID } from '@/constants'
 import AppLayout from '@/components/AppLayout.vue';
 
 const coctail = ref(null)
 const route = useRoute();
-const router = useRouter()
 
 const coctailId = computed(() => route.path.split("/").pop())
 
@@ -32,16 +31,13 @@ async function getCoctail(){
     coctail.value = data?.data?.drinks[0];
 }
 
-function goBack(){
-    router.go(-1);
-}
 
 getCoctail();
 </script>
 
 <template>
     <div v-if="coctail" class="wrap">
-        <AppLayout :imgUrl="coctail.strDrinkThumb" :backFunc="goBack">
+        <AppLayout :imgUrl="coctail.strDrinkThumb">
             <div class="wrapper">
                 <div class="info">
                     <div class="title">{{ coctail.strDrink}}</div>

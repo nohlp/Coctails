@@ -1,11 +1,79 @@
 <script setup>
+import axios from 'axios';
+import { computed, ref } from 'vue';
+import { COCATIL_RANDOM, INGREDIENT_PIC } from '@/constants'
+import AppLayout from '@/components/AppLayout.vue';
 
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css';
+
+const coctail = ref(null)
+
+
+const ingredients = computed(() => {
+    const ingredients = [];
+
+    for(let i=1; i <= 15; i++){
+        if(!coctail.value[`strIngredient${i}`]) break
+
+        const ingredient=  coctail.value[`strIngredient${i}`]
+
+        ingredients.push(ingredient)
+    }
+
+    return ingredients;
+})
+
+async function getCoctail(){
+    const data = await axios.get(`${COCATIL_RANDOM}`);
+    coctail.value = data?.data?.drinks[0];
+}
+
+getCoctail();
 </script>
 
 <template>
-CoctailRandom
+    <div v-if="coctail" class="wrap">
+        <AppLayout :imgUrl="coctail.strDrinkThumb">
+            <div class="wrapper">
+                <div class="info">
+                    <div class="title">{{ coctail.strDrink}}</div>
+                    <div class="line"></div>
+                    <div class="slider">
+                        <swiper
+                            :slides-per-view="3"
+                            :space-between="50"
+                            class="swiper"
+                        >
+                            <swiper-slide
+                                v-for="(ingredient, key) in ingredients"
+                                :key="key"
+                            >
+                                <img :src="`${INGREDIENT_PIC}${ingredient}-Small.png`">
+                                <div class="name">
+                                    {{ ingredient }}
+                                </div>
+                            </swiper-slide>
+                        </swiper>
+                    </div>
+                    <div class="instructions">
+                        {{ coctail.strInstructions }}
+                    </div>
+                </div>
+            </div>
+        </AppLayout>
+    </div>
 </template>
 
 <style lang="sass" scoped>
 @import '../assets/styles/main.sass'
+
+.slider
+    padding: 50px 0
+
+.swiper
+    width: 586px
+
+.name
+    padding-top: 20px
 </style>
