@@ -6,6 +6,7 @@ import { INGREDIENTS_URL, COCTAILS_BY_INGREDIENT_URL } from '../constants/index'
 export const useRootStore = defineStore('root', {
   state: () => ({
     ingredients: [],
+    ingredient: null,
     coctails: [],
   }),
   actions: {
@@ -16,6 +17,9 @@ export const useRootStore = defineStore('root', {
     async getCoctails(ingredient){
       const data = await axios.get(`${COCTAILS_BY_INGREDIENT_URL}${ingredient}`)
       this.coctails = data?.data?.drinks
+    },
+    setIngredinet(val){
+      this.ingredient = val;
     }
   }
 })
